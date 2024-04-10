@@ -9,9 +9,13 @@ decode_results results;
 #define echoPin 7 // Echo Pin
 #define trigPin 8 // Trigger Pin
 #define LEDPin 13 // Onboard LED
+int LEDPin1 = 10;
+int LEDPin2 = 11;
+int LEDPin3 = 12;
 int maximumRange = 200; // Maximum range needed
 int minimumRange = 0; // Minimum range needed
-long duration, distance; /
+int buzzer = 9;
+long duration, distance; 
 void setup() {
  lcd.init();                      
  Serial.begin(9600);
@@ -23,7 +27,11 @@ void setup() {
  lcd.print("Distance is:  ");
  pinMode(trigPin, OUTPUT);
  pinMode(echoPin, INPUT);
+ pinMode(buzzer,OUTPUT);// set digital IO pin pattern, OUTPUT to be output
  pinMode(LEDPin, OUTPUT); 
+ pinMode(LEDPin2, OUTPUT);// define pin with LED connected as output.
+ pinMode(LEDPin3, OUTPUT);// define pin with LED connected as output.
+ pinMode(LEDPin1, OUTPUT);// define pin with LED connected as output.
 }
 void loop() {
 
@@ -35,6 +43,7 @@ void loop() {
  duration = pulseIn(echoPin, HIGH);
  
  //Calculate the distance (in cm) based on the speed of sound.
+digitalWrite(buzzer, LOW);
 distance = duration/58.2;
 if (distance >= maximumRange || distance <= minimumRange){
  
@@ -57,6 +66,18 @@ if (distance >= maximumRange || distance <= minimumRange){
  {
   lcd.setCursor(5,1);
   lcd.print("    ");
+  digitalWrite(buzzer, HIGH);
+  delay(100);
+  digitalWrite(buzzer, LOW);
+  digitalWrite(LEDPin1, HIGH);
+  digitalWrite(LEDPin2, HIGH);
+  digitalWrite(LEDPin3, HIGH);
+  delay(100);
+} else {
+    digitalWrite(buzzer, LOW);
+  digitalWrite(LEDPin1, HIGH);
+  digitalWrite(LEDPin2, HIGH);
+  digitalWrite(LEDPin3, HIGH);
 }
 
 
@@ -65,6 +86,7 @@ if (distance >= maximumRange || distance <= minimumRange){
     Serial.println(results.value);
     if(results.value == 5316027) {
       Serial.println("You pressed up");
+      
       
     } 
     
